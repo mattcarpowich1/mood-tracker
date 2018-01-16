@@ -3,12 +3,16 @@ package main
 import (
   "net/http"
   "log"
+  "github.com/mattcarpowich1/mood-tracker/auth"
+  "github.com/gorilla/mux"
 )
 
 func main() {
-  http.Handle("/", http.FileServer(http.Dir("./client/build")))
-  log.Printf("Listening on port 8080...")
-  http.ListenAndServe(":8080", nil)
+  router := mux.NewRouter()
+  router.HandleFunc("/register", auth.Register).Methods("POST")
+  router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/build")))
+  http.Handle("/", router)
+  log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 
