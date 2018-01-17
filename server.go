@@ -11,7 +11,7 @@ import (
 )
 
 const connectionString = `
-  user=matthewcarpowich
+  user=christopherwalden
   dbname=moodtrackerdb
   sslmode=disable`
 
