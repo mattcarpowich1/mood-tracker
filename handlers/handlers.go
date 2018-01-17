@@ -8,6 +8,10 @@ import (
   "time"
 )
 
+type userId struct {
+  ID int
+}
+
 var err error
 
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
@@ -24,19 +28,23 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
     user.UpdatedAt = user.CreatedAt
     user.LastLogin = user.UpdatedAt
 
-    err = db.InsertUser(dbCon, &user)
+    var id int
+
+    err, id = db.InsertUser(dbCon, &user)
     if err != nil {
       panic(err)
     }
 
-    userJson, err := json.Marshal(user)
+    result := userId{id}
+
+    userIdJson, err := json.Marshal(result)
     if err != nil {
       panic(err)
     }
-    
+
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
-    w.Write(userJson)
+    w.Write(userIdJson)
 
   }
 
