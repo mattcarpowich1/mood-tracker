@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import './App.css'
+import Main from './components/Main'
+import Nav from './components/Nav'
+import Home from './pages/Home'
+// import Footer from './components/Footer'
 
 class App extends Component {
-
-  state = {
-
-  }
 
   render() {
     return (
       <div className='App'>
-        <header className='App-header'>
-          <h1 className='App-title'>Welcome to Mood Tracker</h1>
-        </header>
-        <p className='App-intro'>
-          How ya feelin?
-        </p>
+        <Nav />
+
+        <Main />
+
+      {/*<Footer />*/}
       </div>
     )
   }
