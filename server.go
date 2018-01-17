@@ -10,18 +10,23 @@ import (
   _ "github.com/lib/pq"
 )
 
+const connectionString = `
+  user=matthewcarpowich
+  dbname=moodtrackerdb
+  sslmode=disable`
+
 func main() {
 
   var err error
 
   router := mux.NewRouter()
 
-  db.DBCon, err = sql.Open("postgres", "user=matthewcarpowich dbname=moodtrackerdb sslmode=disable")
+  db.DBCon, err = sql.Open("postgres", connectionString)
   if err != nil {
     panic(err)
   }
 
-  router.HandleFunc("/user/new", handlers.CreateUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/add", handlers.AddUser(db.DBCon)).Methods("POST")
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/build")))
   http.Handle("/", router)
   log.Fatal(http.ListenAndServe(":8080", router))

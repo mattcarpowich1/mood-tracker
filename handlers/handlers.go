@@ -8,45 +8,43 @@ import (
   "time"
 )
 
-type User struct {
-  Username string
-  Password string
-  CreatedAt time.Time
+type userId struct {
+  ID int
 }
 
 var err error
 
-func CreateUser(dbCon *sql.DB) http.HandlerFunc {
-
+func AddUser(dbCon *sql.DB) http.HandlerFunc {
   fn := func(w http.ResponseWriter, r *http.Request) {
 
-    // initialize empty user
-    user := User{}
+    user := db.User{}
 
-    // parse json request body and use it to set fields on user
-    // user is passed as a pointer variable so its fields can be modified 
     err := json.NewDecoder(r.Body).Decode(&user)
     if err != nil {
       panic(err)
     }
 
-    err = db.InsertUser(dbCon)
-    if err != nil {
-      panic(err)
-    }
-
-    // set created at field on user to current local time
     user.CreatedAt = time.Now().Local()
+    user.UpdatedAt = user.CreatedAt
+    user.LastLogin = user.UpdatedAt
 
-    // MARSHAL, or convert user object back to json and 
-    // write to response
-    userJson, err := json.Marshal(user)
+    var id int
+
+    err, id = db.InsertUser(dbCon, &user)
     if err != nil {
       panic(err)
     }
+
+    result := userId{id}
+
+    userIdJson, err := json.Marshal(result)
+    if err != nil {
+      panic(err)
+    }
+
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
-    w.Write(userJson)
+    w.Write(userIdJson)
 
   }
 
