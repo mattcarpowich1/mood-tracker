@@ -7,7 +7,7 @@ import (
 )
 
 var (
-  // connection handle for the db
+  // db connection handle 
   DBCon *sql.DB
 )
 
@@ -20,6 +20,10 @@ type User struct {
   CreatedAt time.Time
   UpdatedAt time.Time
   LastLogin time.Time
+}
+
+type UserId struct {
+  ID int
 }
 
 func InsertUser(db *sql.DB, user *User) (error, int) {
@@ -43,5 +47,28 @@ func InsertUser(db *sql.DB, user *User) (error, int) {
   fmt.Println("New user added!")
 
   return nil, id
+
+}
+
+func FindUser(db *sql.DB, id *UserId) (error, *User) {
+
+  query := `
+    SELECT FROM users WHERE id = $1`
+
+  user := User{}
+
+  rows, err := db.Query(query, id.ID)
+  if err != nil {
+    return err, nil
+  }
+
+  err = rows.Scan(&username)
+
+  fmt.Println("Username: ")
+  fmt.Println(username)
+
+  user.username = username
+
+  return nil, user
 
 }

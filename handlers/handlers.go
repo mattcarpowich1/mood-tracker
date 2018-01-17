@@ -8,36 +8,44 @@ import (
   "time"
 )
 
-type userId struct {
-  ID int
-}
-
 var err error
 
-// FETCH
-// USER BY ID
-// @mattcarpowich1
-//////////////////
+FETCH
+USER BY ID
+@mattcarpowich1
+////////////////
 func FetchUser(dbCon *sql.DB) http.HandlerFunc {
   fn := func(w http.ResponseWriter, r *http.Request) {
 
-    _id := userId{}
+    _id := db.UserId{}
 
-    err := json.NewDecoder(r.body).Decode(&_id)
+    err := json.NewDecoder(r.Body).Decode(&_id)
     if err != nil {
       panic(err)
     }
 
     err, user = db.FindUser(dbCon, &_id)
+    if err != nil {
+      panic(err)
+    }
+
+    userJson, err := json.Marshal(user)
+    if err != nil {
+      panic(err)
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
 
   }
 }
 
-// INSERTS   
-// NEW USER
+// INSERT   
+// SINGLE USER
 // @mattcarpowich1
 //////////////////
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
+
   fn := func(w http.ResponseWriter, r *http.Request) {
 
     user := db.User{}
