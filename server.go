@@ -11,23 +11,36 @@ import (
 )
 
 const connectionString = `
-  user=christopherwalden
+  user=matthewcarpowich
   dbname=moodtrackerdb
   sslmode=disable`
+
+//\\\\\\\\\\\\\\\\\\\\\\
+//****  BACKEND BY  ****
+//*** mattcarpowich1 ***
+//**********************
+/*/                 /*/
+/*\................/*/
+/*/               /*/
+/*\............../*/
+/*/             /*/
+/*\............/*/
 
 func main() {
 
   var err error
-
-  router := mux.NewRouter()
 
   db.DBCon, err = sql.Open("postgres", connectionString)
   if err != nil {
     panic(err)
   }
 
+  router := mux.NewRouter()
   router.HandleFunc("/user/add", handlers.AddUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/fetch", handlers.FetchUser(db.DBCon)).Methods("POST")
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/build")))
   http.Handle("/", router)
+
   log.Fatal(http.ListenAndServe(":8080", router))
+
 }
