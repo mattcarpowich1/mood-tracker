@@ -7,9 +7,8 @@ import (
 )
 
 var (
-    // DBCon is the connection handle
-    // for the database
-    DBCon *sql.DB
+  // connection handle for the db
+  DBCon *sql.DB
 )
 
 type User struct {

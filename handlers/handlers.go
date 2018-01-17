@@ -14,6 +14,29 @@ type userId struct {
 
 var err error
 
+// FETCH
+// USER BY ID
+// @mattcarpowich1
+//////////////////
+func FetchUser(dbCon *sql.DB) http.HandlerFunc {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+
+    _id := userId{}
+
+    err := json.NewDecoder(r.body).Decode(&_id)
+    if err != nil {
+      panic(err)
+    }
+
+    err, user = db.FindUser(dbCon, &_id)
+
+  }
+}
+
+// INSERTS   
+// NEW USER
+// @mattcarpowich1
+//////////////////
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
   fn := func(w http.ResponseWriter, r *http.Request) {
 
