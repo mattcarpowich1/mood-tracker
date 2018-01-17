@@ -8,42 +8,15 @@ import (
   "time"
 )
 
-var err error
-
-FETCH
-USER BY ID
-@mattcarpowich1
-////////////////
-func FetchUser(dbCon *sql.DB) http.HandlerFunc {
-  fn := func(w http.ResponseWriter, r *http.Request) {
-
-    _id := db.UserId{}
-
-    err := json.NewDecoder(r.Body).Decode(&_id)
-    if err != nil {
-      panic(err)
-    }
-
-    err, user = db.FindUser(dbCon, &_id)
-    if err != nil {
-      panic(err)
-    }
-
-    userJson, err := json.Marshal(user)
-    if err != nil {
-      panic(err)
-    }
-    
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-
-  }
-}
+var (
+  err error
+  user db.User
+)
 
 // INSERT   
 // SINGLE USER
-// @mattcarpowich1
-//////////////////
+// "/user/add"
+/////////////
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
 
   fn := func(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +39,7 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
       panic(err)
     }
 
-    result := userId{id}
+    result := db.UserId{id}
 
     userIdJson, err := json.Marshal(result)
     if err != nil {
@@ -81,4 +54,38 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
 
   return fn
 
+}
+
+// FETCH
+// USER BY ID
+// "user/fetch"
+//////////////
+func FetchUser(dbCon *sql.DB) http.HandlerFunc {
+
+  fn := func(w http.ResponseWriter, r *http.Request) {
+
+    _id := db.UserId{}
+
+    err := json.NewDecoder(r.Body).Decode(&_id)
+    if err != nil {
+      panic(err)
+    }
+
+    err, user = db.FindUser(dbCon, &_id)
+    if err != nil {
+      panic(err)
+    }
+
+    userJson, err := json.Marshal(user)
+    if err != nil {
+      panic(err)
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    w.Write(userJson)
+
+  }
+
+  return fn
 }

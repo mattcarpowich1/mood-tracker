@@ -12,7 +12,7 @@ var (
 )
 
 type User struct {
-  id int
+  ID int
   Username string
   Email string
   PasswordHash string
@@ -50,24 +50,29 @@ func InsertUser(db *sql.DB, user *User) (error, int) {
 
 }
 
-func FindUser(db *sql.DB, id *UserId) (error, *User) {
+func FindUser(db *sql.DB, id *UserId) (error, User) {
 
   query := `
-    SELECT FROM users WHERE id = $1`
+    SELECT username, email, createdat, updatedat, lastlogin
+    FROM users WHERE id=$1`
+
+  stmt, err := db.Prepare(query)
+  if err != nil {
+    panic(err)
+  }
 
   user := User{}
 
-  rows, err := db.Query(query, id.ID)
+  err = stmt.QueryRow(id.ID).Scan(
+    &user.Username,
+    &user.Email,
+    &user.CreatedAt,
+    &user.UpdatedAt,
+    &user.LastLogin)
+
   if err != nil {
-    return err, nil
+    return err, user
   }
-
-  err = rows.Scan(&username)
-
-  fmt.Println("Username: ")
-  fmt.Println(username)
-
-  user.username = username
 
   return nil, user
 

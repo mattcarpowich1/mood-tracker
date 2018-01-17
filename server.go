@@ -27,7 +27,7 @@ const connectionString = `
 /*\............/*/
 
 func main() {
-  
+
   var err error
 
   db.DBCon, err = sql.Open("postgres", connectionString)
@@ -37,6 +37,7 @@ func main() {
 
   router := mux.NewRouter()
   router.HandleFunc("/user/add", handlers.AddUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/fetch", handlers.FetchUser(db.DBCon)).Methods("POST")
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/build")))
   http.Handle("/", router)
 
