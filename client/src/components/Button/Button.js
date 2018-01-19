@@ -4,7 +4,8 @@ import './Button.css'
 export const Button = props => {
   <button type={ props.type } 
     onClick={ prop.onClick }
-    className='button'>
+    className='button'
+  >
      { props.children }
   </button>
 }

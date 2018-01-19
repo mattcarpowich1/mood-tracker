@@ -40,10 +40,9 @@ const Login = props => {
         </div>
 
         <div className='field'>
-          <Button type='submit'
-            className='' 
-            
-          />
+          <Button type='submit'>
+            Login
+          </Button>
         </div>
 
       </form>
