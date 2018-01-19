@@ -16,8 +16,8 @@ var (
   userIdWithHash db.UserIdWithPasswordHash
 )
 
-// INSERT   
-// SINGLE USER
+// CREATE   
+// NEW USER!
 // "/user/add"
 /////////////
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
@@ -101,6 +101,10 @@ func FetchUser(dbCon *sql.DB) http.HandlerFunc {
 
 }
 
+// AUTHENTI-
+// CATE USER
+// "/user/login"
+///////////////
 func LoginUser(dbCon *sql.DB) http.HandlerFunc{
   fn := func(w http.ResponseWriter, r *http.Request) {
 
@@ -115,11 +119,6 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
 
     creds := []byte(credentials.PasswordHash)
 
-    // hashedAttempt, err := bcrypt.GenerateFromPassword(creds, 10)
-    // if err != nil {
-    //   panic(err)
-    // }
-
     err, userIdWithHash = db.FetchByCredentials(dbCon, &credentials)
     if err != nil {
       fmt.Println("oops!")
@@ -130,7 +129,7 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
 
     err = bcrypt.CompareHashAndPassword(hash, creds)
     if err != nil {
-      http.Error(w, "Not authorized", 401)
+      http.Error(w, "Password Incorrect", 401)
       return
     }
 
