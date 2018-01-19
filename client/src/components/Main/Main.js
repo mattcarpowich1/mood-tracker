@@ -21,12 +21,11 @@ class Main extends Component {
     const userData = {
       username: username,
       email: email,
-      password: password,
+      passwordHash: password,
       passwordSalt: 'testSalt'
     }
     axios.post('/user/add', userData)
     .then(res => {
-      // console.log(res)
       this.setState({
         loggedIn: true,
         userId: res.data.ID
