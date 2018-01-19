@@ -3,15 +3,15 @@ package main
 import (
   "net/http"
   "log"
-  "github.com/waldenism/mood-tracker/handlers"
-  "github.com/waldenism/mood-tracker/db"
+  "github.com/mattcarpowich1/mood-tracker/handlers"
+  "github.com/mattcarpowich1/mood-tracker/db"
   "database/sql"
   "github.com/gorilla/mux"
   _ "github.com/lib/pq"
 )
 
 const connectionString = `
-  user=christopherwalden
+  user=matthewcarpowich
   dbname=moodtrackerdb
   sslmode=disable`
 

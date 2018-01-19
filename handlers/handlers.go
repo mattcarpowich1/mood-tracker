@@ -6,7 +6,7 @@ import (
   "database/sql"
   "time"
   "fmt"
-  "github.com/waldenism/mood-tracker/db"
+  "github.com/mattcarpowich1/mood-tracker/db"
   "golang.org/x/crypto/bcrypt"
 )
 
@@ -34,8 +34,6 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
     user.LastLogin = user.UpdatedAt
 
     password := []byte(user.PasswordHash)
-    fmt.Println(password)
-    fmt.Println(string(password))
 
     hash, err := bcrypt.GenerateFromPassword(password, 10)
     if err != nil {
