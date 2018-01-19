@@ -64,8 +64,6 @@ const Register = props => {
           </div>
         </form>
 
-        <Button handler= {this.} />
-
       </div>
     </div>
   )
