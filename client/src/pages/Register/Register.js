@@ -1,7 +1,7 @@
 import React from 'react'
-import './Signup.css'
+import './Register.css'
 
-const Signup = props => {
+const Register = props => {
 
   let username, email, password
 
@@ -64,10 +64,12 @@ const Signup = props => {
           </div>
         </form>
 
+        <Button handler= {this.} />
+
       </div>
     </div>
   )
 
 }
 
-export default Signup
+export default Register

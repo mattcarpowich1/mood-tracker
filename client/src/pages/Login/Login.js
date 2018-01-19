@@ -6,20 +6,43 @@ const Login = props => {
     <div className=''>
 
       <form 
-        onSubmit={ 
-          (({ u, p }) =>
-            props.handler(u, p)
-          ) 
+        onSubmit={
+          e => {
+            e.preventDefault()
+            props.handler(
+              username.value,
+              email.value,
+              password.value
+            )
+          }          
         }
       >
         <div className='field'>
           <label>Username</label>
-          <input name='username' type='text' className='' ></input>
+          <input name='username' 
+            type='text'
+            className=''
+            ref={ node => {
+                username = node
+              } }
+          ></input>
         </div>
 
         <div className='field'>
           <label>Password</label>
-          <input name='password' type='password' className='' ></input>
+          <input name='password' 
+            type='password' 
+            className=''
+            ref={ node => {
+                username = node
+              } }
+          ></input>
+        </div>
+
+        <div className='field'>
+          <Button type='submit'>
+            Login
+          </Button>
         </div>
 
       </form>
