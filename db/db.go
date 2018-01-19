@@ -26,6 +26,16 @@ type UserId struct {
   ID int
 }
 
+type UserCredentials struct {
+  Username string
+  PasswordHash string
+}
+
+type UserIdWithPasswordHash struct {
+  ID int
+  PasswordHash string
+}
+
 func InsertUser(db *sql.DB, user *User) (error, int) {
   query := `  
     INSERT INTO users (username, email, passwordHash,
@@ -52,6 +62,7 @@ func InsertUser(db *sql.DB, user *User) (error, int) {
   fmt.Println("New user added!")
 
   return nil, id
+
 }
 
 func FindUser(db *sql.DB, id *UserId) (error, User) {
@@ -78,4 +89,29 @@ func FindUser(db *sql.DB, id *UserId) (error, User) {
   }
 
   return nil, user
+
+}
+
+func FetchByCredentials(db *sql.DB, credentials *UserCredentials) (error, UserIdWithPasswordHash) {
+  query := `
+    SELECT id, passwordHash 
+    FROM users WHERE username=$1`
+
+  stmt, err := db.Prepare(query)
+  if err != nil {
+    panic(err)
+  }
+
+  user := UserIdWithPasswordHash{}
+
+  err = stmt.QueryRow(credentials.Username).Scan(
+    &user.ID, 
+    &user.PasswordHash)
+
+  if err != nil {
+    return err, user
+  }
+
+  return nil, user
+
 }
