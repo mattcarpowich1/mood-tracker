@@ -13,10 +13,11 @@ import (
 var (
   err error
   user db.User
+  userIdWithHash db.UserIdWithPasswordHash
 )
 
-// INSERT   
-// SINGLE USER
+// CREATE   
+// NEW USER!
 // "/user/add"
 /////////////
 func AddUser(dbCon *sql.DB) http.HandlerFunc {
@@ -32,8 +33,9 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
     user.UpdatedAt = user.CreatedAt
     user.LastLogin = user.UpdatedAt
 
-    var password []byte
-    copy(password[:], user.PasswordHash)
+    password := []byte(user.PasswordHash)
+    fmt.Println(password)
+    fmt.Println(string(password))
 
     hash, err := bcrypt.GenerateFromPassword(password, 10)
     if err != nil {
@@ -64,6 +66,7 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
   }
 
   return fn
+
 }
 
 // FETCH
@@ -95,4 +98,52 @@ func FetchUser(dbCon *sql.DB) http.HandlerFunc {
   }
 
   return fn 
+
+}
+
+// AUTHENTI-
+// CATE USER
+// "/user/login"
+///////////////
+func LoginUser(dbCon *sql.DB) http.HandlerFunc{
+  fn := func(w http.ResponseWriter, r *http.Request) {
+
+    w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+
+    credentials := db.UserCredentials{}
+
+    err := json.NewDecoder(r.Body).Decode(&credentials)
+    if err != nil {
+      panic(err)
+    }
+
+    creds := []byte(credentials.PasswordHash)
+
+    err, userIdWithHash = db.FetchByCredentials(dbCon, &credentials)
+    if err != nil {
+      fmt.Println("oops!")
+      panic(err)
+    }
+
+    hash := []byte(userIdWithHash.PasswordHash)
+
+    err = bcrypt.CompareHashAndPassword(hash, creds)
+    if err != nil {
+      http.Error(w, "Password Incorrect", 401)
+      return
+    }
+
+    userJson, err := json.Marshal(userIdWithHash.ID)
+    if err != nil {
+      panic(err)
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    w.Write(userJson)
+
+  }
+
+  return fn
+
 }
