@@ -6,7 +6,7 @@ import (
   "database/sql"
   "time"
   "fmt"
-  "github.com/mattcarpowich1/mood-tracker/db"
+  "github.com/waldenism/mood-tracker/db"
   "golang.org/x/crypto/bcrypt"
 )
 
@@ -108,7 +108,7 @@ func FetchUser(dbCon *sql.DB) http.HandlerFunc {
 func LoginUser(dbCon *sql.DB) http.HandlerFunc{
   fn := func(w http.ResponseWriter, r *http.Request) {
 
-    w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
+    // w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
 
     credentials := db.UserCredentials{}
 

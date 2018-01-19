@@ -1,54 +1,62 @@
 import React from 'react'
 import './Login.css'
+import Button from '../../components/Button'
 
 const Login = props => {
-  <div>
-    <div className=''>
 
-      <form 
-        onSubmit={
-          e => {
-            e.preventDefault()
-            props.handler(
-              username.value,
-              email.value,
-              password.value
-            )
-          }          
-        }
-      >
-        <div className='field'>
-          <label>Username</label>
-          <input name='username' 
-            type='text'
-            className=''
-            ref={ node => {
-                username = node
-              } }
-          ></input>
-        </div>
+  let username, password
 
-        <div className='field'>
-          <label>Password</label>
-          <input name='password' 
-            type='password' 
-            className=''
-            ref={ node => {
-                username = node
-              } }
-          ></input>
-        </div>
+  return (
+    <div>
+      <div>
 
-        <div className='field'>
-          <Button type='submit'>
-            Login
-          </Button>
-        </div>
+        <form 
+          onSubmit={
+            e => {
+              e.preventDefault()
+              props.handler(
+                username.value,
+                password.value
+              )
+            }          
+          }
+        >
+          <div className='field'>
+            <label>Username</label>
+            <input name='username' 
+              type='text'
+              ref={ node => {
+                  username = node
+                } }
+            ></input>
+          </div>
 
-      </form>
+          <div className='field'>
+            <label>Password</label>
+            <input name='password' 
+              type='password' 
+              ref={ node => {
+                  password = node
+                } }
+            ></input>
+          </div>
 
+          <div className='field'>
+            <button type='submit'>
+              Login
+            </button>
+          </div>
+
+          {
+            props.error ? <h2>{ props.error }</h2>
+              : null
+          }
+
+        </form>
+
+      </div>
     </div>
-  </div>
+  )
 }
 
 export default Login

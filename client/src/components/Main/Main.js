@@ -10,11 +10,8 @@ class Main extends Component {
 
   state = {
     loggedIn: false,
-    userId: null
-  }
-
-  componentWillMount() {
-
+    userId: null,
+    error: null
   }
 
   handleRegister = (
@@ -40,60 +37,59 @@ class Main extends Component {
     })
   }
 
-  handleLogin = ({
+  handleLogin = (
     username,
     password,
-  }) => {
-
-    // event.preventDefault()
-    // axios.post('', {
-    //   username,
-    //   password
-    // })
-    // .then(res => {
-    //   console.log(res)
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
+  ) => {
+    const userData = {
+      Username: username,
+      PasswordHash: password
+    }
+    axios.post('/user/login', userData)
+    .then(res => {
+      this.setState({
+        loggedIn: true,
+        userId: res.data
+      })
+    })
+    .catch(err => {
+      this.setState({
+        error: "Password Incorrect"
+      })
+    })
   }
 
   render() {
 
-    const { loggedIn } = this.state
+    const { loggedIn, error } = this.state
 
     return (
       <Router>
         <div>
-          <Main>
 
-            <Route exact path='/' 
-              component{() => (
-                loggedIn ? 
-                  <Home 
-                    user={this.state.userId}
-                  /> : 
-                  <Login 
-                    handler={( u, pH ) =>
-                      this.handleLogin(u, pH)
-                    }
-                  />
-              )}/>
+          <Route exact path='/' 
+            component={() => (
+              loggedIn ? 
+                <Home 
+                  user={ this.state.userId }
+                /> : 
+                <Login 
+                  handler={( u, pH ) =>
+                    this.handleLogin(u, pH)
+                  }
+                  error={ error }
+                />
+          )}/>
 
-            <Route path='/register' 
-              component={() => (
-                loggedIn ? <Redirect to='/' /> : 
-                <Register 
-                  handler={( u, e, pH ) => 
-                    this.handleRegister(u, e, pH) 
-                  } />
-              )} />
+          <Route path='/register' 
+          component={() => (
+            loggedIn ? <Redirect to='/' /> : 
+            <Register 
+              handler={( u, e, pH ) => 
+                this.handleRegister(u, e, pH) 
+              } />
+          )}/>
 
-            {/*
-                <h1 style={{ textAlign: 'center' }}>
-            //     { `Logged in as ID: ${ this.state.userId }` }
-            </h1> */}  
-          </Main>
         </div>
       </Router>
     ) 
