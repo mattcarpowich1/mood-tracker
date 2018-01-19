@@ -70,25 +70,29 @@ class Main extends Component {
           <Route exact path='/' 
             component={() => (
               loggedIn ? 
-                <Home 
-                  user={ this.state.userId }
-                /> : 
-                <Login 
-                  handler={( u, pH ) =>
-                    this.handleLogin(u, pH)
-                  }
-                  error={ error }
-                />
-          )}/>
+              <Home user={ this.state.userId } /> 
+                : 
+              <Login 
+                handler={( u, pH ) =>
+                  this.handleLogin(u, pH)
+                }
+                error={ error } 
+              />
+            )
+          }/>
 
           <Route path='/register' 
-          component={() => (
-            loggedIn ? <Redirect to='/' /> : 
-            <Register 
-              handler={( u, e, pH ) => 
-                this.handleRegister(u, e, pH) 
-              } />
-          )}/>
+            component={() => (
+              loggedIn ? 
+              <Redirect to='/' /> 
+                : 
+              <Register 
+                handler={( u, e, pH ) => 
+                  this.handleRegister(u, e, pH)
+                } 
+              />
+            )
+          }/>
 
         </div>
       </Router>
