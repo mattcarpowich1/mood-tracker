@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import Signup from '../../pages/Signup'
+import Register from '../../pages/Register'
 // import Login from '../../pages/Login'
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 // import Home from '../../pages/Home'
@@ -11,6 +11,10 @@ class Main extends Component {
   state = {
     loggedIn: false,
     userId: null
+  }
+
+  componentDidMount() {
+
   }
 
   handleRegister = (
@@ -56,12 +60,14 @@ class Main extends Component {
 
   render() {
 
-    return !this.state.loggedIn ?  
-      <Signup 
+    return !this.state.loggedIn ?
+      <Register 
         handler={ ( u, e, pH ) => 
           this.handleRegister(u, e, pH) }
-      /> 
-    : <h1 style={{ textAlign: 'center' }}>{ `Logged in as ID: ${ this.state.userId }` }</h1> 
+      /> : 
+        <h1 style={{ textAlign: 'center' }}>
+          { `Logged in as ID: ${ this.state.userId }` }
+        </h1> 
 
   }
 
