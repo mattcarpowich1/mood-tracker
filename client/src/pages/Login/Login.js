@@ -24,22 +24,27 @@ const Login = props => {
             className=''
             ref={ node => {
                 username = node
-              } }>
+              } }
           ></input>
         </div>
 
         <div className='field'>
           <label>Password</label>
-          <input name='password' type='password' className='' ></input>
+          <input name='password' 
+            type='password' 
+            className=''
+            ref={ node => {
+                username = node
+              } }
+          ></input>
         </div>
 
         <div className='field'>
-            <button type='submit'
-              className=''
-            > 
-              Submit
-            </button>
-          </div>
+          <Button type='submit'
+            className='' 
+            
+          />
+        </div>
 
       </form>
 
