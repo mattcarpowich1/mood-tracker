@@ -1,11 +1,10 @@
-package handlers
+package controllers
 
 import (
   "net/http"
   "encoding/json"
   "database/sql"
   "time"
-  "fmt"
   "github.com/mattcarpowich1/mood-tracker/db"
   "golang.org/x/crypto/bcrypt"
 )
@@ -29,7 +28,7 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
       panic(err)
     }
 
-    user.CreatedAt = time.Now().Local()
+    user.CreatedAt = time.Now()
     user.UpdatedAt = user.CreatedAt
     user.LastLogin = user.UpdatedAt
 
@@ -50,7 +49,6 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
       panic(err)
     }
 
-    fmt.Println("New user added!")
     result := db.UserId{id}
 
     userIdJson, err := json.Marshal(result)
@@ -105,9 +103,6 @@ func FetchUser(dbCon *sql.DB) http.HandlerFunc {
 ///////////////
 func LoginUser(dbCon *sql.DB) http.HandlerFunc{
   fn := func(w http.ResponseWriter, r *http.Request) {
-
-    // w.Header().Set("WWW-Authenticate", `Basic realm="Restricted"`)
-
     credentials := db.UserCredentials{}
 
     err := json.NewDecoder(r.Body).Decode(&credentials)
@@ -115,17 +110,16 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
       panic(err)
     }
 
-    creds := []byte(credentials.PasswordHash)
-
     err, userIdWithHash = db.FetchByCredentials(dbCon, &credentials)
     if err != nil {
-      fmt.Println("oops!")
-      panic(err)
+      http.Error(w, "User doesn't exist", 401)
+      return
     }
 
-    hash := []byte(userIdWithHash.PasswordHash)
+    err = bcrypt.CompareHashAndPassword(
+      []byte(userIdWithHash.PasswordHash), 
+      []byte(credentials.PasswordHash))
 
-    err = bcrypt.CompareHashAndPassword(hash, creds)
     if err != nil {
       http.Error(w, "Password Incorrect", 401)
       return
@@ -139,7 +133,6 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
     w.Write(userJson)
-
   }
 
   return fn

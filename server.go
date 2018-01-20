@@ -2,10 +2,11 @@ package main
 
 import (
   "net/http"
-  "log"
-  "github.com/mattcarpowich1/mood-tracker/handlers"
+  "os"
+  "github.com/mattcarpowich1/mood-tracker/controllers"
   "github.com/mattcarpowich1/mood-tracker/db"
   "database/sql"
+  "github.com/gorilla/handlers"
   "github.com/gorilla/mux"
   _ "github.com/lib/pq"
 )
@@ -35,12 +36,12 @@ func main() {
   }
 
   router := mux.NewRouter()
-  router.HandleFunc("/user/add", handlers.AddUser(db.DBCon)).Methods("POST")
-  router.HandleFunc("/user/fetch", handlers.FetchUser(db.DBCon)).Methods("POST")
-  router.HandleFunc("/user/login", handlers.LoginUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/add", controllers.AddUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/fetch", controllers.FetchUser(db.DBCon)).Methods("POST")
+  router.HandleFunc("/user/login", controllers.LoginUser(db.DBCon)).Methods("POST")
   router.PathPrefix("/").Handler(http.FileServer(http.Dir("./client/build")))
   http.Handle("/", router)
 
-  log.Fatal(http.ListenAndServe(":8080", router))
+  http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, router))
 
 }
