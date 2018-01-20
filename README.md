@@ -1,4 +1,3 @@
 #mood-tracker
 
-Front End: @waldenism
-Back End: @mattcarpowich1
+Project by @mattcarpowich1 and @waldenism
