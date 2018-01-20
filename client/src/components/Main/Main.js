@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { 
+  BrowserRouter as Router,
+  Route, 
+  Redirect } from 'react-router-dom'
 import axios from 'axios'
-
 import Register from '../../pages/Register'
 import Login from '../../pages/Login'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Home from '../../pages/Home'
 
 class Main extends Component {
@@ -14,11 +16,13 @@ class Main extends Component {
     error: null
   }
 
-  handleRegister = (
-    username,
-    email,
-    password
-  ) => {
+  handleError = message => {
+    this.setState({
+      error: message
+    })
+  }
+
+  handleRegister = (username, email, password) => {
     const userData = {
       username: username,
       email: email,
@@ -33,14 +37,12 @@ class Main extends Component {
       })
     })
     .catch(err => {
-      console.log(err)
+      const { data } = err.response
+      this.handleError(data)
     })
   }
 
-  handleLogin = (
-    username,
-    password,
-  ) => {
+  handleLogin = (username, password) => {
     const userData = {
       Username: username,
       PasswordHash: password
@@ -53,9 +55,8 @@ class Main extends Component {
       })
     })
     .catch(err => {
-      this.setState({
-        error: "Password Incorrect"
-      })
+      const { data } = err.response
+      this.handleError(data)
     })
   }
 
