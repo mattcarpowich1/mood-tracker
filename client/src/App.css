@@ -1,3 +1,94 @@
 .App {
   text-align: center;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0 auto;
+  width: 90%;
+}
+
+form label {
+  display: block;
+  text-align: left;
+  font-size: 1em;
+  color: #222;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-bottom: 2px solid #222;
+  padding: 2.5% 0px;
+  font-size: 1.5em;
+  margin-bottom: 5%;
+  color: #222;
+  width: 33vw;
+  caret-color: #222;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus {
+  outline: none;
+}
+
+
+@media screen and (max-width: 880px) {
+  form .field {
+    width: 45vw;
+  }
+
+  form .field button {
+    width: 100% !important;
+  }
+
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"] {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-bottom: 2px solid #222;
+    padding: 2.5% 0px;
+    font-size: 1.5em;
+    margin-bottom: 5%;
+    color: #222;
+    width: 100%;
+    caret-color: #222;
+  }
+}
+
+
+@media screen and (max-width: 400px) {
+
+  form {
+    width: 90%;
+  }
+
+  form .field {
+    width: 100%;
+  }
+
+  form .field button {
+    width: 100% !important;
+  }
+
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"] {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    border-bottom: 2px solid #222;
+    padding: 2.5% 0px;
+    font-size: 1.5em;
+    margin-bottom: 5%;
+    color: #222;
+    width: 100%;
+    caret-color: #222;
+  }
+}

@@ -6,6 +6,7 @@ import (
   "database/sql"
   "time"
   "github.com/mattcarpowich1/mood-tracker/db"
+  "github.com/dgrijalva/jwt-go"
   "golang.org/x/crypto/bcrypt"
 )
 
@@ -14,6 +15,9 @@ var (
   user db.User
   userIdWithHash db.UserIdWithPasswordHash
 )
+
+// secret for JWT, replace with env variable
+var mySigningKey = []byte("this-is-a-secret")
 
 // CREATE   
 // NEW USER!
@@ -125,14 +129,16 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
       return
     }
 
-    userJson, err := json.Marshal(userIdWithHash.ID)
-    if err != nil {
-      panic(err)
-    }
+    // ***JWT STUFF*** //
+    token := jwt.New(jwt.SigningMethodHS256)
+    claims := token.Claims.(jwt.MapClaims)
+    claims["aud"] = userIdWithHash.ID
+    claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+    tokenString, _ := token.SignedString(mySigningKey)
 
-    w.Header().Set("Content-Type", "application/json")
-    w.WriteHeader(http.StatusOK)
-    w.Write(userJson)
+    w.Write([]byte(tokenString))
+    
+    return
   }
 
   return fn

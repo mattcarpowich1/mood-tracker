@@ -1,0 +1,41 @@
+.level {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.level > div {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: 2.5%;
+  width: 90%;
+}
+
+nav h3 {
+  font-size: 3em;
+  margin: 0;
+  line-height: 1;
+  padding: 0;
+  color: #222;
+  font-family: 'Avenir', sans-serif;
+}
+
+a, a:hover, a:active {
+  text-decoration: none;
+}
+
+a {
+  color: #222;
+}
+
+a:hover {
+  color: #555;
+}
