@@ -1,5 +1,3 @@
 #mood-tracker
 
-Mood tracking web application by @mattcarpowich1 and @waldenism
-
-[a link](https://github.com/user/repo/blob/branch/other_file.md)
+Mood tracking web application by [@mattcarpowich1](https://github.com/mattcarpowich1) and [@waldenism](https://github.com/waldenism)
