@@ -1,3 +1,3 @@
 #mood-tracker
 
-Project by @mattcarpowich1 and @waldenism
+Mood tracking web application by @mattcarpowich1 and @waldenism
