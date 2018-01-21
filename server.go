@@ -3,8 +3,8 @@ package main
 import (
   "net/http"
   "os"
-  "github.com/mattcarpowich1/mood-tracker/controllers"
-  "github.com/mattcarpowich1/mood-tracker/db"
+  "github.com/waldenism/mood-tracker/controllers"
+  "github.com/waldenism/mood-tracker/db"
   "database/sql"
   "github.com/gorilla/handlers"
   "github.com/gorilla/mux"
@@ -12,7 +12,7 @@ import (
 )
 
 const connectionString = `
-  user=matthewcarpowich
+  user=christopherwalden
   dbname=moodtrackerdb
   sslmode=disable`
 
