@@ -11,6 +11,20 @@ form {
   width: 90%;
 }
 
+form .field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 33vw;
+}
+
+form .field small {
+  text-align: left;
+  align-self: flex-start;
+  margin-bottom: 16px;
+  margin-top: -12px;
+}
+
 form label {
   display: block;
   text-align: left;

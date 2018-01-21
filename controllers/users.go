@@ -5,7 +5,7 @@ import (
   "encoding/json"
   "database/sql"
   "time"
-  "github.com/mattcarpowich1/mood-tracker/db"
+  "github.com/waldenism/mood-tracker/db"
   "github.com/dgrijalva/jwt-go"
   "golang.org/x/crypto/bcrypt"
 )

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import './Login.css'
 import Button from '../../components/Button'
+import './Login.css'
 
 class Login extends Component {
 
@@ -10,6 +10,18 @@ class Login extends Component {
 
   componentDidMount() {
     this.username.focus()
+  }
+
+  hoverIn = () => {
+    this.setState({
+      hover: true
+    })
+  }
+
+  hoverOut = () => {
+    this.setState({
+      hover: false
+    })
   }
 
   render() {
@@ -64,21 +76,17 @@ class Login extends Component {
             </div>
 
             <div className='field'>
-              <button onMouseEnter={() => {
-                this.setState({
-                  hover: true
-                })
-              }} 
-                onMouseLeave={() => {
-                  this.setState({
-                    hover: false
-                  })
-                }}
-                style={ buttonStyle }
-                className={ this.state.hover ? 'hover' : '' }
-                type='submit'>
+
+              <Button
+                hover={ this.state.hover } 
+                hoverIn={ this.hoverIn }
+                hoverOut={ this.hoverOut }
+                styling={ buttonStyle }
+                buttonType={'submit'}
+              > 
                 Login
-              </button>
+              </Button>
+
             </div>
 
             {

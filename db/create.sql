@@ -1,8 +1,8 @@
 # RUN THE FOLLOWING COMMANDS 
-# inside directory db/
 # ======================================== #
-# 1) dropdb moodtrackerdb                  #
-# 2) psql -U <username> -a -f create.sql   #
+# 1) cd db/                                #
+# 2) dropdb moodtrackerdb                  #
+# 3) psql -U <username> -a -f create.sql   #
 # ======================================== #
 
 DROP DATABASE IF EXISTS moodtrackerdb;
