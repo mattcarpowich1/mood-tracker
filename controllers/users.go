@@ -6,7 +6,7 @@ import (
   "database/sql"
   "time"
   "fmt"
-  "github.com/mattcarpowich1/mood-tracker/db"
+  "github.com/waldenism/mood-tracker/db"
   "github.com/dgrijalva/jwt-go"
   "golang.org/x/crypto/bcrypt"
 )

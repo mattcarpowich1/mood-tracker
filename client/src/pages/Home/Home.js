@@ -96,7 +96,7 @@ class Home extends Component {
 
     return (
       <div id='home_container' className={`main-screen${ show ? ' show' : ' hide' }`}>
-        <div ref={ node => this.main = node } >
+        <div style={{ width: '66.6%' }} ref={ node => this.main = node } >
 
           {
             !submitted ? (
