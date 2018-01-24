@@ -7,9 +7,9 @@ const Nav = ({ loggedIn, registerPage, triggerRegister }) => {
     <nav className='level'>
       <div>
         <Link className='logo' to='/'>
-          <object 
+          <img 
             className='logo-icon'
-            data={'wave4.svg'} 
+            src='wave4.svg' 
             type="image/svg+xml"
             height='64px'
             style={ { 
