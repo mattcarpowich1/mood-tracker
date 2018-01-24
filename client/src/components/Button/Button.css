@@ -1,9 +1,19 @@
 .hover {
-  color: #eee !important;
-  background-color: #999 !important;
-  transition: all .2s ease-in-out;
+  background-color: #6eceeb;
+  border: 1px solid #6eceeb;
+  transition: all .2s ease-out;
+  cursor: pointer;
 }
 
 button {
-  transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+  border-radius: 2px;
+  border: 1px solid #22a7d8;
+  background-color: #22a7d8;
+  color: #FEFEFE;
+  font-size: 15px;
+  margin-top: 4px;
+  width: 66.6%;
+  padding: 4px 0px;
+  font-family: 'Avenir', sans-serif;
 }

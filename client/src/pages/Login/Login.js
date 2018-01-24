@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../../components/Button'
 import './Login.css'
 
@@ -6,10 +7,6 @@ class Login extends Component {
 
   state = {
     hover: false
-  }
-
-  componentDidMount() {
-    this.username.focus()
   }
 
   hoverIn = () => {
@@ -24,23 +21,21 @@ class Login extends Component {
     })
   }
 
+  componentDidMount() {
+    this.username.focus()
+  }
+
   render() {
 
     let username, password
 
     const buttonStyle = {
-      fontFamily: 'inherit',
-      fontSize: '16px',
-      width: '192px',
-      padding: '8px 0px',
-      border: '1px solid #999',
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      color: '#999'
+      fontFamily: 'Avenir, sans-serif'
     }
 
     return (
       <div>
-        <div>
+        <div id='form_holder'>
 
           <form 
             onSubmit={
@@ -84,8 +79,12 @@ class Login extends Component {
                 styling={ buttonStyle }
                 buttonType={'submit'}
               > 
-                Login
+                LOGIN
               </Button>
+
+              <small id='switch_page'>
+                Don't have an account? <Link to='/'>Sign Up</Link>
+              </small>
 
             </div>
 

@@ -1,0 +1,26 @@
+/*#slider_container {
+  position: relative;
+  margin: 0 auto;
+  width: 600px;
+  height: 20px;
+  background-color: #929292;
+  border-radius: 10px;
+  margin-top: 64px;
+}
+
+#slider_thumb {
+  position: absolute;
+  top: -14px;
+  left: 276px;
+  width: 48px;
+  height: 48px;
+  background-color: green;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+#slider_thumb:hover {
+  background-color: lightgreen;
+  transition: all .2s ease;
+}*/

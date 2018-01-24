@@ -1,3 +1,7 @@
+#hide-title {
+  visibility: hidden;
+}
+
 .level {
   display: flex;
   flex-direction: row;
@@ -6,7 +10,9 @@
   flex-wrap: wrap;
   margin: 0 auto;
   width: 100%;
-  margin-bottom: 48px;
+  margin-bottom: 16px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid rgba(0,0,0,.0975);
 }
 
 .level > div {
@@ -15,21 +21,34 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  padding-top: 2.5%;
-  width: 90%;
+  padding: 24px 0;
+  width: calc(100% - 48px);
 }
 
-nav h3 {
-  font-size: 3em;
+.level h3 {
+  font-size: 60px;
   margin: 0;
   line-height: 1;
   padding: 0;
-  color: #222;
-  font-family: 'Avenir', sans-serif;
+  font-family: 'Concert One', sans-serif;
+  font-weight: normal;
 }
 
-a, a:hover, a:active {
+.level h3:hover {
+  color: #222 !important;
+}
+
+#hide-title {
+  color: rgba(0, 0, 0, 0) !important;
+}
+
+a, a:hover, a:active, svg:hover, object:hover {
   text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover:not(object) {
+  color: initial;
 }
 
 a {
@@ -38,4 +57,32 @@ a {
 
 a:hover {
   color: #555;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@media screen and (max-width: 880px) {
+  .level h3 {
+    font-size: 48px;
+  }
+
+  .logo object {
+    height: 52px !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .level h3 {
+    font-size: 40px;
+  }
+
+  .logo object {
+    height: 43px !important;
+  }
+
 }

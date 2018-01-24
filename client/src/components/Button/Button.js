@@ -7,6 +7,7 @@ const Button = props =>
     style={ props.styling }
     className={ props.hover ? 'hover' : '' }
     type={ props.buttonType }
+    onClick={ props.clickHandler ? props.clickHandler : null}
   >
     { props.children }
   </button>

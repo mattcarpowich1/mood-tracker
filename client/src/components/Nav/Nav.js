@@ -2,18 +2,33 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './Nav.css'
 
-const Nav = ({ loggedIn }) => {
+const Nav = ({ loggedIn, registerPage, triggerRegister }) => {
   return (
     <nav className='level'>
       <div>
-        <Link to='/'>
-          <h3>MoodSurfer</h3>
+        <Link className='logo' to='/'>
+          <object 
+            className='logo-icon'
+            data={'wave4.svg'} 
+            type="image/svg+xml"
+            height='64px'
+            style={ { 
+              color: 'black',
+              marginRight: '8px' } }/>
+          {!loggedIn ?
+            <h3 id='show-title'>MoodSurfer</h3> 
+              : 
+            <h3 id='hide-title'>MoodSurfer</h3>}
         </Link>
         { 
           loggedIn ? 
-            <Link style={ { alignSelf: 'right' } } to='/logout'>Logout</Link>
+            <Link 
+              style={ { 
+                alignSelf: 'right', 
+                fontFamily: 'Avenir, sans-serif' } } 
+              to='/logout'>Logout</Link>
           : 
-            <Link style={ { alignSelf: 'right' } } to='/register'>Sign Up</Link>
+            null
         }
       </div>
     </nav>

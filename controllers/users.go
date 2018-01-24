@@ -5,7 +5,8 @@ import (
   "encoding/json"
   "database/sql"
   "time"
-  "github.com/waldenism/mood-tracker/db"
+  "fmt"
+  "github.com/mattcarpowich1/mood-tracker/db"
   "github.com/dgrijalva/jwt-go"
   "golang.org/x/crypto/bcrypt"
 )
@@ -37,6 +38,9 @@ func AddUser(dbCon *sql.DB) http.HandlerFunc {
     user.LastLogin = user.UpdatedAt
 
     password := []byte(user.PasswordHash)
+
+    fmt.Println("USER")
+    fmt.Println(user)
 
     hash, err := bcrypt.GenerateFromPassword(password, 10)
     if err != nil {
@@ -113,6 +117,8 @@ func LoginUser(dbCon *sql.DB) http.HandlerFunc{
     if err != nil {
       panic(err)
     }
+
+    fmt.Println(credentials)
 
     err, userIdWithHash = db.FetchByCredentials(dbCon, &credentials)
     if err != nil {
