@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../../components/Button'
+import Welcome from '../../components/Welcome.js'
 import './Register.css'
 
 class Register extends Component {
 
   state = {
-    start: false,
     hover: false,
     show: -1
-  }
-
-  componentDidMount() {
-    this.username.focus()
   }
 
   hoverIn = () => {
@@ -26,23 +23,21 @@ class Register extends Component {
     })
   }
 
+  componentDidMount() {
+    this.username.focus()
+  }
+
   render() {
 
-    let username, email, password
+    let username, firstName, email, password
 
     const buttonStyle = {
-      fontFamily: 'inherit',
-      fontSize: '16px',
-      width: '192px',
-      padding: '8px 0px',
-      border: '1px solid #999',
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      color: '#999'
+      fontFamily: 'Avenir, sans-serif'
     }
 
     return (
       <div>
-        <div className=''>
+        <div id='form_holder'>
 
           <form 
             onSubmit= { 
@@ -50,6 +45,7 @@ class Register extends Component {
                 e.preventDefault()
                 this.props.handler(
                   username.value,
+                  firstName.value,
                   email.value,
                   password.value
                 )
@@ -85,6 +81,17 @@ class Register extends Component {
             </div>
 
             <div className='field'>
+              <label>First Name</label>
+              <input name='firstName'
+                type='text'
+                className=''
+                ref={ node => {
+                  firstName = node
+                } }>
+              </input>
+            </div>
+
+            <div className='field'>
               <label>Email</label>
               <input name='email'
                 onChange={() => {
@@ -107,7 +114,7 @@ class Register extends Component {
                 className={ this.state.show == 1 ? 
                   'show' : 'hide' 
                 }>
-                Never shown on the site - must use real email address.</small>
+                Never will be displayed on the site.</small>
             </div>
 
             <div className='field'>
@@ -144,8 +151,12 @@ class Register extends Component {
                 styling={ buttonStyle }
                 buttonType={'submit'}
               > 
-                Create Account
+                CREATE ACCOUNT
               </Button>
+
+              <small id='switch_page'>
+                Already have an account? <Link to='/login'>Login</Link>
+              </small>
 
             </div>
           </form>

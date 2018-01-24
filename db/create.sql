@@ -14,10 +14,18 @@ CREATE DATABASE moodtrackerdb;
 CREATE TABLE users (
   ID SERIAL PRIMARY KEY,
   username varchar(100) not null UNIQUE,
+  firstName varchar(100) not null,
   email varchar(100) not null UNIQUE,
   passwordHash varchar(1000) not null,
-  passwordSalt varchar(1000),
   createdAt TIMESTAMP DEFAULT NOW(),
   updatedAt TIMESTAMP DEFAULT NOW(),
   lastLogin TIMESTAMP DEFAULT NOW() 
+);
+
+CREATE TABLE moods (
+  ID SERIAL PRIMARY KEY,
+  value INT not null,
+  userID INT not null REFERENCES users(ID),
+  CHECK (value >= 0 AND value < 11),
+  createdAt TIMESTAMP DEFAULT NOW()
 );

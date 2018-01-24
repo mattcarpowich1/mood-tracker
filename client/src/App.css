@@ -2,32 +2,114 @@
   text-align: center;
 }
 
-form {
+.fun {
+  position: absolute;
+  background-color: #FAFAFA;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
+
+#home_container {
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0,0,0,.0975);
+  width: calc(100vw - 48px);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+#graph {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#form_holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: calc(100% - 48px);
   margin: 0 auto;
-  width: 90%;
+}
+
+#hide-title {
+  visibility: hidden;
+}
+
+#welcome {
+  height: calc(100vh - 192px);
+  width: calc(67% - 112px);
+  background-color: #FEFEFE;
+  border: 1px solid rgba(0,0,0,.0975);
+  border-radius: 2px;
+  padding: 24px;
+}
+
+#welcome_inner {
+  width: 100%;
+  height: calc(100vh - 192px);
+  background: url('./components/ocean.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+form {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 320px;
+  padding: 24px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0,0,0,.0975);
+  border-radius: 2px;
+  margin-bottom: 16px;
+  transition: .3s all ease-out;
 }
 
 form .field {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 33vw;
+  width: 100%;
 }
 
 form .field small {
+  color: #929292;
   text-align: left;
   align-self: flex-start;
   margin-bottom: 16px;
   margin-top: -12px;
+  font-family: 'Avenir', sans-serif;
+}
+
+form .field small#switch_page {
+  align-self: flex-end;
+  color: #222;
+  margin-top: 16px;
+  margin-bottom: 0;
+  font-size: 1em;
+  font-family: 'Avenir', sans-serif;
+}
+
+form .field small#switch_page a {
+  font-weight: bold;
 }
 
 form label {
   display: block;
   text-align: left;
+  align-self: flex-start;
+  font-family: 'Avenir', sans-serif;
   font-size: 1em;
   color: #222;
 }
@@ -37,13 +119,14 @@ form input[type="email"],
 form input[type="password"] {
   background-color: rgba(0, 0, 0, 0);
   border: none;
-  border-bottom: 2px solid #222;
-  padding: 2.5% 0px;
-  font-size: 1.5em;
-  margin-bottom: 5%;
+  border-bottom: 1px solid #222;
+  padding: 8px 0px;
+  font-size: 20px;
+  margin-bottom: 16px;
   color: #222;
-  width: 33vw;
+  width: 100%;
   caret-color: #222;
+  font-family: 'Avenir', sans-serif;
 }
 
 form input[type="text"]:focus,
@@ -54,12 +137,24 @@ form input[type="password"]:focus {
 
 
 @media screen and (max-width: 880px) {
+
+  form {
+    width: 100%;
+    max-width: none;
+    align-self: center;
+  }
+
   form .field {
-    width: 45vw;
+    width: 100%;
+    align-items: flex-start;
   }
 
   form .field button {
     width: 100% !important;
+  }
+
+  form .field small#switch_page {
+    align-self: center;
   }
 
   form input[type="text"],
@@ -67,10 +162,8 @@ form input[type="password"]:focus {
   form input[type="password"] {
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    border-bottom: 2px solid #222;
-    padding: 2.5% 0px;
-    font-size: 1.5em;
-    margin-bottom: 5%;
+    border-bottom: 1px solid #222;
+    font-size: 20px;
     color: #222;
     width: 100%;
     caret-color: #222;
@@ -86,6 +179,11 @@ form input[type="password"]:focus {
 
   form .field {
     width: 100%;
+    align-items: flex-start;
+  }
+
+  form .field small#switch_page {
+    align-self: center;
   }
 
   form .field button {
@@ -97,10 +195,8 @@ form input[type="password"]:focus {
   form input[type="password"] {
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    border-bottom: 2px solid #222;
-    padding: 2.5% 0px;
-    font-size: 1.5em;
-    margin-bottom: 5%;
+    border-bottom: 1px solid #222;
+    font-size: 16px;
     color: #222;
     width: 100%;
     caret-color: #222;

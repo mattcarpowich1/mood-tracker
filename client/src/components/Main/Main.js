@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import { 
-  BrowserRouter as Router,
-  Route, 
-  Redirect } from 'react-router-dom'
-import axios from 'axios'
-import jwt from 'jsonwebtoken'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { handleError } from '../../utils/ErrorHandlers.js'
+import Auth from '../../utils/Auth.js'
 import Nav from '../Nav'
 import Register from '../../pages/Register'
 import Login from '../../pages/Login'
@@ -19,112 +16,70 @@ class Main extends Component {
   }
 
   componentWillMount() {
-    const token = JSON.parse(localStorage.getItem('token'))
-    if (token) {
-      this.setState({
-        loggedIn: true,
-        userId: token.aud
-      })
-    }
+    Auth.findToken(this)
   }
 
-  handleError = err => {
-    switch (typeof(err)) {
-      case "string":
-        this.setState({
-          error: err
-        })
-        break;
-
-      case "object":
-        if (err.response) {
-          this.setState({
-            error: err.response.data
-          })
-        }
-        break;
-
-      default:
-        this.setState({
-          error: defaultErrorMessage
-        })
-    }
-  }
-
-  handleRegister = (username, email, passwordHash) => {
-    const userData = {
-      username,
-      email,
-      passwordHash,
-      passwordSalt: 'testSalt'
-    }
-    axios.post('/user/add', userData)
-    .then(res => {
+  handleRegister = (username, firstName, email, passwordHash) => {
+    Auth.registerUser(username, firstName, email, passwordHash)
+    .then(id => {
       this.setState({
         loggedIn: true,
-        userId: res.data.ID
+        userId: id
       })
     })
-    .catch(err => {
-      const { data } = err.response
-      this.handleError(data)
-    })
+    .catch(err => handleError(err, this))
   }
 
   handleLogin = (username, password) => {
-    const userData = {
-      Username: username,
-      PasswordHash: password
-    }
-    axios.post('/user/login', userData)
-    .then(res => {
-      let token = jwt.verify(res.data, 'this-is-a-secret');
-      if (token) { 
-        localStorage.setItem('token', JSON.stringify(token))
-        this.setState({
-          loggedIn: true,
-          userId: token.aud
-        })
-      } else {
-        this.handleError('Could not verify user')
-      } 
+    Auth.loginUser(username, password) 
+    .then(id => {
+      this.setState({
+        loggedIn: true,
+        userId: id
+      })
     })
-    .catch(err => {
-      this.handleError(err)
-    })
+    .catch(err => handleError(err, this))
   }
 
   handleLogout = () => {
-    localStorage.setItem("token", null)
-    this.setState({
-      loggedIn: false,
-      userId: null
-    })
+    Auth.logoutUser(this)
   }
 
   render() {  
 
     const { 
-     loggedIn,
-     error, 
-     userId } = this.state
+      loggedIn, 
+      error, 
+      userId 
+    } = this.state
 
-    const {
-      handleRegister,
-      handleLogin,
-      handleLogout
+    const { 
+      handleRegister, 
+      handleLogin, 
+      handleLogout 
     } = this
 
     return (
       <Router>
         <div className='main'>
-
-          <Nav loggedIn= { loggedIn }/>
+          <Nav loggedIn= { loggedIn }
+            triggerFade={ this.triggerFadeOut } />
 
           <Route exact path='/' 
-            component={() =>
-              loggedIn ? 
-              <Home user={ userId } /> 
+            component={() => 
+              loggedIn ? <Home user={ userId } /> 
+                : 
+              <Register 
+                handler={( u, fN, e, pH ) => 
+                  handleRegister(u, fN, e, pH)
+                }
+              />
+            }
+          />
+
+          <Route path='/login' 
+            component={() => 
+              loggedIn ? <Redirect to='/' /> 
                 : 
               <Login 
                 handler={( u, pH ) =>
@@ -132,35 +87,21 @@ class Main extends Component {
                 }
                 error={ error } 
               />
-          }/>
-
-          <Route path='/register' 
-            component={() => 
-              loggedIn ? 
-              <Redirect to='/' /> 
-                : 
-              <Register 
-                handler={( u, e, pH ) => 
-                  handleRegister(u, e, pH)
-                }
-              />
-          }/>
+            }
+          />
 
           <Route path='/logout'
             component={() => {
               handleLogout()
               return <Redirect to='/' /> 
-            }} 
-          />
+            }
+          }/>
 
         </div>
       </Router>
     ) 
-
   }
 
 }
-
-const defaultErrorMessage = 'Oops! Looks like there was an error.'
 
 export default Main

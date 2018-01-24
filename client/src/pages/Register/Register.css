@@ -1,12 +1,14 @@
 .show {
   opacity: 1;
-  transition: .2s all ease-out;
-  height: 16px;
+  /*height: 16px !important;*/
+  margin-top: 8px;
+  margin-top: -8px !important;
+  transition: .5s all cubic-bezier(.6,.43,.34,.73);
 }
 
 .hide {
   opacity: 0;
-  transition: all ease;
-  height: 0px;
-  transition: .2s all ease;
+  margin-top: -16px !important;
+  /*height: 0px !important;*/
+  transition: .5s all cubic-bezier(.6,.43,.34,.73);
 }
