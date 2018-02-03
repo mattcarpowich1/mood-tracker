@@ -76,10 +76,39 @@ func AddMood(db *sql.DB, mood *Mood) (error, MoodId) {
 
 }
 
-func FindMoodsHour(db *sql.DB, userId *UserId) (error, Moods) {
+func FindMoodsDay(db *sql.DB, userId *UserId) (error, Moods) {
   query := `
   SELECT value, createdat FROM moods
   WHERE userid=$1 AND createdat >= NOW() - '1 day'::INTERVAL
+  ORDER BY createdat DESC;`
+
+  moods := Moods{}
+
+  rows, err := db.Query(query, userId.ID)
+  if err != nil {
+    return err, moods
+  }
+
+  var vals []int64
+  var times []time.Time
+
+  for rows.Next() {
+    rows.Scan(&val, &t)
+    vals = append(vals, val)
+    times = append(times, t)
+  }
+
+  moods.Values = vals
+  moods.Times = times
+
+  return nil, moods
+
+}
+
+func FindMoodsWeek(db *sql.DB, userId *UserId) (error, Moods) {
+  query := `
+  SELECT value, createdat FROM moods
+  WHERE userid=$1 AND createdat >= NOW() - '1 week'::INTERVAL
   ORDER BY createdat DESC;`
 
   moods := Moods{}

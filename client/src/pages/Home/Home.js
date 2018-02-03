@@ -25,7 +25,8 @@ class Home extends Component {
     submitted: false,
     moodValues: [],
     timeValues: [],
-    width: document.body.clientWidth * .9 - 72
+    week: false,
+    width: document.body.clientWidth * .81 - 72
   }
 
   hoverIn = () => {
@@ -49,14 +50,22 @@ class Home extends Component {
   }
 
   updateDimensions() {
-    this.setState({width: window.innerWidth * .9 - 72})
+    this.setState({width: window.innerWidth * .81 - 72})
+  }
+
+  weekSelect = () => {
+    Moods.fetchMoodsLastWeek(this.props.user, this)
+  }
+
+  daySelect = () => {
+    Moods.fetchMoodsLastDay(this.props.user, this)
   }
 
   submitMood = val => {
     this.setState({
       show: false
     })
-    Moods.addMood(this.props.user, val, this)
+    Moods.addMood(this.props.user, val, this, this.state.week)
   }
 
   render() {
@@ -72,13 +81,16 @@ class Home extends Component {
       timeValues,
       submitted,
       hover,
-      width
+      width,
+      week
      } = this.state
 
      const {
       hoverIn,
       hoverOut,
-      submitMood
+      submitMood,
+      weekSelect,
+      daySelect
      } = this
 
 
@@ -93,6 +105,50 @@ class Home extends Component {
       .map((item, index) => { 
         return { x: timeValues[index], y: item, color: item }
       })
+
+    const dayDomain = [0, 3600 * 24]
+    const dayTicks= [0, (60 * 60 * 8), (60 * 60 * 16), (60 * 60 * 24)]
+
+    const dayFormat = v => {
+      let dayAgo = moment(Date.now()).subtract(1, 'day')
+      let tMoment = dayAgo.add(v, 'second')
+      let val = tMoment.format('h:mm a')
+      return val
+    }
+
+    const nowSeconds = parseInt(moment(Date.now()).format('s')) +
+                      (parseInt(moment(Date.now()).format('m')) * 60) + 
+                      (parseInt(moment(Date.now()).format('H')) * 3600)
+
+    const weekTicks = [ 
+      0 + nowSeconds,
+      (3600 * 24) + nowSeconds,
+      (3600 * 48) + nowSeconds,
+      (3600 * 72) + nowSeconds,
+      (3600 * 96) + nowSeconds,
+      (3600 * 120) + nowSeconds, 
+      (3600 * 144) + nowSeconds,
+      (3600 * 168) + nowSeconds]
+    const weekDomain = [0, 3600 * 168]
+
+    const weekFormat = v => {
+      let weekAgo = moment(Date.now()).subtract(1, 'week')
+      let tMoment = weekAgo.add(v, 'second')
+      let val = tMoment.format('dddd')
+      return val
+    }
+
+    let ticks, format, domain
+
+    if (week) {
+      domain = weekDomain
+      ticks = weekTicks
+      format = weekFormat
+    } else {
+      domain = dayDomain
+      ticks = dayTicks
+      format = dayFormat
+    }
 
     return (
       <div id='home_container' className={`main-screen${ show ? ' show' : ' hide' }`}>
@@ -110,10 +166,7 @@ class Home extends Component {
                 <XYPlot
                   width={ width }
                   height={ 300 }
-                  xDomain={[
-                    0,
-                    60 * 60 * 24
-                  ]} 
+                  xDomain={ domain } 
                   yDomain={ [0,10] }
                   colorDomain={ [0, 5, 10] }
                   colorRange={ ['red', '#bbb', 'blue'] }>
@@ -126,26 +179,32 @@ class Home extends Component {
                     colorDomain={ [0, 10] }
                     colorRange={ ['#f51e57', '#3b38df'] } />
                   <XAxis 
-                    tickValues={[
-                      0, 
-                      (60 * 60 * 8), 
-                      (60 * 60 * 16), 
-                      (60 * 60 * 24)
-                    ]}
-                    tickFormat={ v => {
-                      let dayAgo = moment(Date.now()).subtract(1, 'day')
-                      let tMoment = dayAgo.add(v, 'second')
-                      let val = tMoment.format('h:mm a')
-                      return val
-                    } }
-                    tickLabelAngle={ -30 } />
-                  <YAxis tickValues={ [0, 2, 4, 6, 8, 10] }/>
+                    hideLine
+                    tickValues={ ticks }
+                    tickFormat={ format }
+                    tickLabelAngle={ -35 } />
+                  <YAxis 
+                    tickValues={ [0, 2, 4, 6, 8, 10] }/>
                 </XYPlot>
+
+                <div id='time_toggle'>
+                  <a
+                    className='toggler'
+                    style={ week ? null : { 'color': '#222', 'fontWeight': '500'} }
+                    onClick={ daySelect }>DAY</a>
+                  <a
+                    className='toggler'
+                    style={ week ? { color: '#222', 'fontWeight': '500'} : null }
+                    onClick={ weekSelect }>WEEK</a>
+                 </div>
+
                 <h2 style={ {
                   textAlign: 'center',
-                  fontFamily: '"Avenir"',
+                  fontFamily: 'Avenir',
+                  fontWeight: '300',
+                  color: '#222',
                   alignSelf: 'center'} }>
-                  Displaying past 24 hours</h2>
+                  {`Displaying past ${ week ? 'week' : '24 hours'}.`}</h2>
 
                 <Button hover={ this.state.hover } 
                   hoverIn={ this.hoverIn }

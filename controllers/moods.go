@@ -6,7 +6,7 @@ import (
   "database/sql"
   "time"
   "fmt"
-  "github.com/waldenism/mood-tracker/db"
+  "github.com/mattcarpowich1/mood-tracker/db"
 )
 
 var (
@@ -44,7 +44,7 @@ func AddMood(dbCon *sql.DB) http.HandlerFunc {
 
 }
 
-func FetchMoodsLastHour(dbCon *sql.DB) http.HandlerFunc {
+func FetchMoodsPastDay(dbCon *sql.DB) http.HandlerFunc {
   fn := func(w http.ResponseWriter, r *http.Request) {
     err = json.NewDecoder(r.Body).Decode(&userId)
     if err != nil {
@@ -53,7 +53,35 @@ func FetchMoodsLastHour(dbCon *sql.DB) http.HandlerFunc {
 
     fmt.Println(userId)
 
-    err, moods = db.FindMoodsHour(dbCon, &userId)
+    err, moods = db.FindMoodsDay(dbCon, &userId)
+    if err != nil {
+      panic(err)
+    }
+
+    moodsJson, err := json.Marshal(moods)
+    if err != nil {
+      panic(err)
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    w.Write(moodsJson)
+  }
+
+  return fn
+
+}
+
+func FetchMoodsPastWeek(dbCon *sql.DB) http.HandlerFunc {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+    err = json.NewDecoder(r.Body).Decode(&userId)
+    if err != nil {
+      panic(err)
+    }
+
+    fmt.Println(userId)
+
+    err, moods = db.FindMoodsWeek(dbCon, &userId)
     if err != nil {
       panic(err)
     }

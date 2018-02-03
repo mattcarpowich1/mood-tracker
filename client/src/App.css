@@ -22,11 +22,17 @@
   padding: 24px;
 }
 
+#home_container > div {
+  width: 100% !important;
+}
+
 #graph {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 #form_holder {
