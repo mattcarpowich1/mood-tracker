@@ -1,6 +1,42 @@
 import axios from 'axios'
 import moment from 'moment'
 
+const fetchMoodsLastWeek = (_id, _this) => {
+  axios.post('mood/fetch/week', {
+    ID: _id
+  })
+  .then(response => {
+    const weekSeconds = 3600 * 168
+    let moods, times
+    if (response.data.Values) {
+      moods = response.data.Values.reverse()
+      times = response.data.Times.reverse().map(t => {
+        let rightNow = moment(Date.now())
+        let weekAgo = moment(Date.now()).subtract(1, 'week')
+        let tMoment = moment(t).add(8, 'hour')
+        return weekSeconds - rightNow.diff(tMoment, 'second')
+      })
+      _this.setState({
+        moodValues: moods,
+        timeValues: times,
+        submitted: true,
+        week: true,
+        show: true
+      })
+    } else {
+      _this.setState({
+        moodValues: [],
+        timeValues: [],
+        week: true,
+        show: true
+      })
+    }
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
 const fetchMoodsLastDay = (_id, _this) => {
   axios.post('/user/fetch', {
       ID: _id
@@ -33,12 +69,14 @@ const fetchMoodsLastDay = (_id, _this) => {
             moodValues: moods,
             timeValues: times,
             submitted: submittedToday,
+            week: false,
             show: true
           })
         } else {
           _this.setState({
             submitted: false,
-            show: true
+            show: true,
+            week: false
           })
         }
         })
@@ -51,14 +89,18 @@ const fetchMoodsLastDay = (_id, _this) => {
     })
 }
 
-const addMood = (_id, value, _this) => {
+const addMood = (_id, value, _this, week) => {
   axios.post('/mood/add', {
       Value: value,
       UserID: _id
     })
     .then(res => {
       setTimeout(() => {
-        fetchMoodsLastDay(_id, _this)
+        if (!week) { 
+          fetchMoodsLastDay(_id, _this)
+        } else {
+          fetchMoodsLastWeek(_id, _this)
+        }
       }, 300)
       
     })
@@ -68,6 +110,7 @@ const addMood = (_id, value, _this) => {
 }
 
 export default {
+  fetchMoodsLastWeek,
   fetchMoodsLastDay,
   addMood
 }
